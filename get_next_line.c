@@ -6,7 +6,7 @@
 /*   By: tjkruger <tjkruger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 14:06:32 by tjkruger          #+#    #+#             */
-/*   Updated: 2024/11/15 13:57:12 by tjkruger         ###   ########.fr       */
+/*   Updated: 2024/11/18 15:48:04 by tjkruger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,11 @@ static char	*extract_line_and_update_buffer(char **buffer)
 		tmp = ft_strdup(newline_pos + 1);
 		free(*buffer);
 		*buffer = tmp;
+		if (**buffer == '\0')
+		{
+			free(*buffer);
+			*buffer = NULL;
+		}
 	}
 	else
 	{
@@ -59,9 +64,6 @@ static char	*extract_line_and_update_buffer(char **buffer)
 char	*get_next_line(int fd)
 {
 	static char	*buffers[1024];
-	char		*line;
-	char		*tmp;
-	char		*newline_pos;
 
 	if (fd < 0 || fd >= 1024 || BUFFER_SIZE <= 0)
 		return (NULL);
@@ -72,7 +74,5 @@ char	*get_next_line(int fd)
 		buffers[fd] = NULL;
 		return (NULL);
 	}
-	newline_pos = ft_strchr(buffers[fd], '\n');
-	line = extract_line_and_update_buffer(&buffers[fd]);
-	return (line);
+	return (extract_line_and_update_buffer(&buffers[fd]));
 }

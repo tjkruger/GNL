@@ -6,14 +6,16 @@
 /*   By: tjkruger <tjkruger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 13:07:57 by tjkruger          #+#    #+#             */
-/*   Updated: 2024/11/15 13:11:51 by tjkruger         ###   ########.fr       */
+/*   Updated: 2024/11/18 15:51:10 by tjkruger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# define BUFFER_SIZE 1024
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 1024
+# endif
 
 # include <stdlib.h>
 # include <unistd.h>
