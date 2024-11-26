@@ -6,21 +6,11 @@
 /*   By: tjkruger <tjkruger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 15:00:18 by tjkruger          #+#    #+#             */
-/*   Updated: 2024/11/15 12:48:59 by tjkruger         ###   ########.fr       */
+/*   Updated: 2024/11/21 13:55:55 by tjkruger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-size_t	ft_strlen(const char *s)
-{
-	size_t	i;
-
-	i = 0;
-	while (s && s[i])
-		i++;
-	return (i);
-}
 
 char	*ft_strchr(const char *s, int c)
 {
@@ -60,26 +50,41 @@ char	*ft_strdup(const char *s)
 	return (dup);
 }
 
+static void	copy_str(char *dest, const char *src, size_t *index)
+{
+	size_t	i;
+
+	if (src)
+	{
+		i = 0;
+		while (src[i])
+		{
+			dest[*index] = src[i];
+			(*index)++;
+			i++;
+		}
+	}
+}
+
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*str;
 	size_t	len1;
 	size_t	len2;
-	size_t	i;
+	size_t	index;
 
-	if (!s1 && !s2)
-		return (NULL);
-	len1 = ft_strlen(s1);
-	len2 = ft_strlen(s2);
+	len1 = 0;
+	len2 = 0;
+	if (s1)
+		len1 = ft_strlen(s1);
+	if (s2)
+		len2 = ft_strlen(s2);
 	str = malloc(len1 + len2 + 1);
 	if (!str)
 		return (NULL);
-	i = -1;
-	while (++i < len1)
-		str[i] = s1[i];
-	i = -1;
-	while (++i < len2)
-		str[len1 + i] = s2[i];
+	index = 0;
+	copy_str(str, s1, &index);
+	copy_str(str, s2, &index);
 	str[len1 + len2] = '\0';
 	return (str);
 }
