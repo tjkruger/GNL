@@ -6,7 +6,7 @@
 /*   By: tjkruger <tjkruger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 15:00:18 by tjkruger          #+#    #+#             */
-/*   Updated: 2024/11/21 13:55:55 by tjkruger         ###   ########.fr       */
+/*   Updated: 2024/11/28 21:45:29 by tjkruger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,11 +89,10 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (str);
 }
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+char	*ft_substr(char const *s, int start, int len, char *buffer)
 {
-	char	*substr;
-	size_t	s_len;
-	size_t	i;
+	int	s_len;
+	int	i;
 
 	if (!s)
 		return (NULL);
@@ -102,12 +101,19 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		return (ft_strdup(""));
 	if (len > s_len - start)
 		len = s_len - start;
-	substr = malloc(len + 1);
-	if (!substr)
-		return (NULL);
 	i = -1;
-	while (++i < len)
-		substr[i] = s[start + i];
-	substr[i] = '\0';
-	return (substr);
+	if (buffer)
+	{
+		while (i++ < len)
+			buffer[i] = s[start + i];
+		buffer[i] = '\0';
+		return (buffer);
+	}
+	buffer = malloc(len + 1);
+	if (!buffer)
+		return (NULL);
+	while (i++ < len)
+		buffer[i] = s[start + i];
+	buffer[i] = '\0';
+	return (buffer);
 }
