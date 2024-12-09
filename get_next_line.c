@@ -6,7 +6,7 @@
 /*   By: tjkruger <tjkruger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 14:06:32 by tjkruger          #+#    #+#             */
-/*   Updated: 2024/12/09 15:34:48 by tjkruger         ###   ########.fr       */
+/*   Updated: 2024/12/09 15:44:44 by tjkruger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,11 @@ char	*get_next_line(int fd)
 	ssize_t		bytes_read;
 
 	line = NULL;
-	if (fd < 0 || read(fd, buffers, 0) < 0)
+	if (fd < 0)
 		return (NULL);
+	bytes_read = read(fd, buffers, 0);
+	if (bytes_read < 0)
+		return (buffers[0] = 0, NULL);
 	line = ft_strjoin(line, buffers);
 	bytes_read = 42;
 	while (!ft_strchr(line, '\n') && bytes_read > 0)
@@ -100,7 +103,10 @@ char	*get_next_line(int fd)
 		if (bytes_read <= 0)
 		{
 			if (bytes_read < 0)
+			{
 				buffers[0] = '\0';
+				return (free(line), NULL);
+			}
 			if (ft_strlen(line))
 				return (line);
 			return (free(line), NULL);
