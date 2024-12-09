@@ -6,7 +6,7 @@
 /*   By: tjkruger <tjkruger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 14:06:32 by tjkruger          #+#    #+#             */
-/*   Updated: 2024/12/09 17:36:56 by tjkruger         ###   ########.fr       */
+/*   Updated: 2024/12/09 17:53:42 by tjkruger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ char	*read_until_nl(char *line, int bytes_read, int fd, char *buffers)
 			return (NULL);
 	}
 	ft_strcpy(buffers, ft_strchr(line, '\n') + 1);
+	*(ft_strchr(line, '\n') + 1) = 0;
 	line = ft_strdup(line);
 	return (line);
 }
