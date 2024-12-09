@@ -6,21 +6,11 @@
 /*   By: tjkruger <tjkruger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 14:06:32 by tjkruger          #+#    #+#             */
-/*   Updated: 2024/12/09 15:44:44 by tjkruger         ###   ########.fr       */
+/*   Updated: 2024/12/09 17:36:56 by tjkruger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-size_t	ft_strlen(const char *s)
-{
-	size_t	i;
-
-	i = 0;
-	while (s && s[i])
-		i++;
-	return (i);
-}
 
 char	*ft_strchr(const char *s, int c)
 {
@@ -52,6 +42,7 @@ char	*ft_strcpy(char *dest, const char *src)
 	return (dest);
 }
 
+// #include <stdio.h>
 char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*str;
@@ -60,7 +51,7 @@ char	*ft_strjoin(char *s1, char *s2)
 
 	len1 = 0;
 	len2 = 0;
-	if (!s1 && !s2)
+	if ((!s1 || !*s1) && (!s2 || !*s2))
 		return (NULL);
 	if (s1)
 		len1 = ft_strlen(s1);
@@ -77,22 +68,9 @@ char	*ft_strjoin(char *s1, char *s2)
 	free(s1);
 	return (str);
 }
-#include <stdio.h>
 
-char	*get_next_line(int fd)
+char	*read_until_nl(char *line, int bytes_read, int fd, char *buffers)
 {
-	static char	buffers[BUFFER_SIZE + 1];
-	char		*line;
-	ssize_t		bytes_read;
-
-	line = NULL;
-	if (fd < 0)
-		return (NULL);
-	bytes_read = read(fd, buffers, 0);
-	if (bytes_read < 0)
-		return (buffers[0] = 0, NULL);
-	line = ft_strjoin(line, buffers);
-	bytes_read = 42;
 	while (!ft_strchr(line, '\n') && bytes_read > 0)
 	{
 		bytes_read = read(fd, buffers, BUFFER_SIZE);
@@ -116,8 +94,25 @@ char	*get_next_line(int fd)
 			return (NULL);
 	}
 	ft_strcpy(buffers, ft_strchr(line, '\n') + 1);
-	*(ft_strchr(line, '\n') + 1) = 0;
+	line = ft_strdup(line);
 	return (line);
+}
+
+char	*get_next_line(int fd)
+{
+	static char	buffers[BUFFER_SIZE + 1];
+	char		*line;
+	ssize_t		bytes_read;
+
+	line = NULL;
+	if (fd < 0)
+		return (NULL);
+	bytes_read = read(fd, buffers, 0);
+	if (bytes_read < 0)
+		return (buffers[0] = 0, NULL);
+	line = ft_strjoin(line, buffers);
+	bytes_read = 42;
+	return (read_until_nl(line, bytes_read, fd, buffers));
 }
 
 // #include <fcntl.h>

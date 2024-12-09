@@ -6,7 +6,7 @@
 /*   By: tjkruger <tjkruger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 13:07:57 by tjkruger          #+#    #+#             */
-/*   Updated: 2024/12/03 14:34:35 by tjkruger         ###   ########.fr       */
+/*   Updated: 2024/12/09 17:31:47 by tjkruger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 # include <stdlib.h>
 # include <unistd.h>
 
+size_t	ft_strlen(const char *s);
+char	*ft_strdup(char *s1);
 char	*get_next_line(int fd);
 
 #endif
