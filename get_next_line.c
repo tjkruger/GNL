@@ -6,7 +6,7 @@
 /*   By: tjkruger <tjkruger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 14:06:32 by tjkruger          #+#    #+#             */
-/*   Updated: 2024/12/03 14:46:22 by tjkruger         ###   ########.fr       */
+/*   Updated: 2024/12/09 15:34:48 by tjkruger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,27 +55,29 @@ char	*ft_strcpy(char *dest, const char *src)
 char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*str;
-	size_t	len1;
-	size_t	len2;
-	size_t	index;
+	int		len1;
+	int		len2;
 
 	len1 = 0;
 	len2 = 0;
+	if (!s1 && !s2)
+		return (NULL);
 	if (s1)
 		len1 = ft_strlen(s1);
 	if (s2)
 		len2 = ft_strlen(s2);
 	str = malloc(len1 + len2 + 1);
 	if (!str)
-		return (NULL);
-	index = 0;
+		return (free(s1), NULL);
 	ft_strcpy(str, s1);
 	ft_strcpy(str + len1, s2);
+	if (!str)
+		return (free(s1), NULL);
 	str[len1 + len2] = '\0';
-	if (s1)
-		free(s1);
+	free(s1);
 	return (str);
 }
+#include <stdio.h>
 
 char	*get_next_line(int fd)
 {
@@ -91,11 +93,17 @@ char	*get_next_line(int fd)
 	while (!ft_strchr(line, '\n') && bytes_read > 0)
 	{
 		bytes_read = read(fd, buffers, BUFFER_SIZE);
+		if (bytes_read > 0)
+			buffers[bytes_read] = '\0';
+		else
+			buffers[0] = '\0';
 		if (bytes_read <= 0)
 		{
+			if (bytes_read < 0)
+				buffers[0] = '\0';
 			if (ft_strlen(line))
 				return (line);
-			return (NULL);
+			return (free(line), NULL);
 		}
 		line = ft_strjoin(line, buffers);
 		if (!line)
@@ -107,17 +115,16 @@ char	*get_next_line(int fd)
 }
 
 // #include <fcntl.h>
-// #include <stdio.h>
 
 // int	main(void)
 // {
 // 	char	*tmp;
 
-// 	int fd = open("/Users/tjkruger/Documents/getnextline/get_next_line.c",
+// 	int fd = open("test.txt",
 // 					O_RDONLY); // Open the file for reading
 // 	while ((tmp = get_next_line(fd)) != NULL)
 // 	{
-// 		printf("%s", tmp); // Print the line
+// 		printf("%s\n", tmp); // Print the line
 // 		free(tmp);
 // 	}
 // 	close(fd);
